@@ -1,4 +1,4 @@
-const teams = [
+export const teams = [
   {
     id: 1,
     teamName: 'Avaí/Kindermann',
@@ -65,4 +65,7 @@ const teams = [
   },
 ];
 
-export default teams;
+export const teamById = {
+  id: 1,
+  teamName: 'Avaí/Kindermann',
+};
