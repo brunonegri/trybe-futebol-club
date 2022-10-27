@@ -4,8 +4,13 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import {app} from '../app'
 const { expect } = chai;
+import { validUser, invalidUser, findUser,adminToken } from '../mocks/users'
+import UserModel from '../database/models/UserModel';
+import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcryptjs';
 chai.use(chaiHttp)
 describe('Tests on /login Route', ()=> {
+    beforeEach(sinon.restore)
     describe('When "email" is not informed', ()=> {
         it('should return a status 400', async()=> {
             const response = await chai.request(app).post('/login')
@@ -29,8 +34,11 @@ describe('Tests on /login Route', ()=> {
     })
     describe('When is informed a valid "user"', ()=> {
         it('should return a status 200', async()=> {
+            sinon.stub(UserModel,'findOne').resolves(findUser as UserModel)
+            sinon.stub(jwt, 'sign').resolves(adminToken.token)
+            sinon.stub(bcrypt, 'compare').resolves(true)
             const response = await chai.request(app).post('/login')
-            .send({email: 'admin@admin.com', password: 'secret_admin'})
+            .send(validUser)
             expect(response.status).to.equal(200)
         })
     })
