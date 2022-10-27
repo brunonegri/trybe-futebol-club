@@ -1,22 +1,23 @@
 import ILogin from '../interfaces/ILogin';
 import UserModel from '../database/models/UserModel';
-import { generateToken } from '../utils/token';
+import { decodeToken } from '../utils/token';
 
-export default class LoginServices {
+export default class UserServices {
   model = UserModel;
 
   constructor() {
-    this.login = this.login.bind(this);
+    this.getUser = this.getUser.bind(this);
+    this.getUserRole = this.getUserRole.bind(this);
   }
 
-  async login(body: ILogin) {
+  async getUser(body: ILogin) {
     const { email } = body;
     const user = await this.model.findOne({ where: { email } });
-
-    if (user) {
-      const payload = { email: user.email, role: user.role };
-      const token = generateToken(payload);
-      return token;
-    }
+    return user;
   }
+
+  getUserRole = (token: string) => {
+    const { role } = decodeToken(token);
+    return { role };
+  };
 }

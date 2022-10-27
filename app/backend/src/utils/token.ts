@@ -1,5 +1,4 @@
-import { sign, verify } from 'jsonwebtoken';
-import { decode } from 'punycode';
+import { sign, verify, JwtPayload } from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET;
 
@@ -8,15 +7,18 @@ interface Token {
   email: string
 }
 
+interface IdecodeToken extends JwtPayload {
+  payload: {
+    role: string
+    email: string
+  }
+}
+
 export function generateToken(payload:Token) {
   return sign(payload, secret as string, { expiresIn: '2d' });
 }
 
-export function authenticateToken(token:string) {
-  const auth = verify(token, secret as string);
-  return auth;
-}
-
 export function decodeToken(token:string) {
-  return decode(token);
+  const auth = verify(token, secret as string) as IdecodeToken;
+  return auth;
 }
