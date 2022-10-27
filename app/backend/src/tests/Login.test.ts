@@ -8,6 +8,7 @@ import { validUser, invalidUser, findUser,adminToken } from '../mocks/users'
 import UserModel from '../database/models/UserModel';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
+
 chai.use(chaiHttp)
 describe('Tests on /login Route', ()=> {
     beforeEach(sinon.restore)
@@ -27,8 +28,10 @@ describe('Tests on /login Route', ()=> {
     })
     describe('When is not informed a valid "email" or "password"', ()=> {
         it('should return a status 401', async()=> {
+            sinon.stub(UserModel,'findOne').resolves(findUser as UserModel)
+            sinon.stub(bcrypt, 'compare').resolves(false)
             const response = await chai.request(app).post('/login')
-            .send({email: 'email@email.com', password: '1234567'})
+            .send(invalidUser)
             expect(response.status).to.equal(401)
         })
     })
