@@ -4,6 +4,5 @@ EXPOSE 3000
 
 COPY . .
 
-ENTRYPOINT [ "npm" ]
 RUN npm install
-CMD ["start"]
+CMD ["npm","start"]
