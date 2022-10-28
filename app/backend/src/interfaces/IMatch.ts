@@ -1,6 +1,8 @@
-export default interface IMatches {
+export interface IMatches {
   homeTeam: number;
   awayTeam: number;
-  homeTeamsGoals: number;
-  awayTeamsGoals: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
 }
+
+export type IMatchScore = Pick<IMatches, 'homeTeamGoals' | 'awayTeamGoals'>;

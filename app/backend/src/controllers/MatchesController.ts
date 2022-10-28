@@ -6,6 +6,7 @@ export default class MatchesController {
     this.getAll = this.getAll.bind(this);
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
+    this.updateScore = this.updateScore.bind(this);
   }
 
   async getAll(req: Request, res: Response) {
@@ -31,5 +32,11 @@ export default class MatchesController {
     const { id } = req.params;
     await this.service.update(Number(id));
     res.status(200).json({ message: 'Finished' });
+  }
+
+  async updateScore(req: Request, res: Response) {
+    const { id } = req.params;
+    const updatedMatch = await this.service.updateScore(Number(id), req.body);
+    res.status(200).json(updatedMatch);
   }
 }

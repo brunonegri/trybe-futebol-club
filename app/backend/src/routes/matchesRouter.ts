@@ -12,4 +12,6 @@ router.post('/matches', authorizes, authMatches, matchesController.create);
 
 router.patch('/matches/:id/finish', authorizes, matchesController.update);
 
+router.patch('/matches/:id', authorizes, matchesController.updateScore);
+
 export default router;
