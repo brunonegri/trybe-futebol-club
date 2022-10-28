@@ -11,6 +11,7 @@ export default class MatchesServices {
     this.getByProgress = this.getByProgress.bind(this);
     this.create = this.create.bind(this);
     this.getById = this.getById.bind(this);
+    this.update = this.update.bind(this);
   }
 
   async getByProgress(progress?: boolean) {
@@ -44,5 +45,9 @@ export default class MatchesServices {
     console.log(created);
 
     return created.id;
+  }
+
+  async update(id: number) {
+    await this.modelMatches.update({ inProgress: 0 }, { where: { id } });
   }
 }

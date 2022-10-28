@@ -5,6 +5,7 @@ export default class MatchesController {
   constructor(private service = new MatchesServices()) {
     this.getAll = this.getAll.bind(this);
     this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
   }
 
   async getAll(req: Request, res: Response) {
@@ -20,13 +21,15 @@ export default class MatchesController {
   }
 
   async create(req: Request, res: Response) {
-    console.log('aqui');
-
     const createdId = await this.service.create(req.body);
-    console.log(createdId);
-
     const createdMatch = await this.service.getById(createdId);
 
     return res.status(201).json(createdMatch);
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    await this.service.update(Number(id));
+    res.status(200).json({ message: 'Finished' });
   }
 }
