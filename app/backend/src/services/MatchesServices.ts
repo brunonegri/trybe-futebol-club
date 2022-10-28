@@ -1,3 +1,4 @@
+import IMatches from '../interfaces/IMatch';
 import TeamsModel from '../database/models/TeamsModel';
 import MatchesModel from '../database/models/MatchesModel';
 
@@ -8,6 +9,8 @@ export default class MatchesServices {
   constructor() {
     this.getAll = this.getAll.bind(this);
     this.getByProgress = this.getByProgress.bind(this);
+    this.create = this.create.bind(this);
+    this.getById = this.getById.bind(this);
   }
 
   async getByProgress(progress?: boolean) {
@@ -29,5 +32,17 @@ export default class MatchesServices {
       ],
     });
     return matches;
+  }
+
+  async getById(id:number) {
+    const match = await this.modelMatches.findOne({ where: { id } });
+    return match;
+  }
+
+  async create(body: IMatches) {
+    const created = await this.modelMatches.create(body);
+    console.log(created);
+
+    return created.id;
   }
 }
